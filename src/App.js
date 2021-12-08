@@ -1,10 +1,14 @@
-import logo from './logo.svg'
 import './App.css'
 
-import { makeStyles, ThemeProvider } from '@mui/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import { ThemeProvider, makeStyles } from '@mui/styles'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 
-import theme from './themes/default'
+import Homepage from './pages/Homepage/Homepage'
+import theme from './themes/default' // Theming for the entire app
 
+// Theming for elements on this page only
 const useStyles = makeStyles(
   theme => ({
     root: {
@@ -21,25 +25,24 @@ const useStyles = makeStyles(
   }
 )
 
-const App = () => {
+const App = props => {
+  const classes = useStyles(props)
+
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <HelmetProvider>
+        <CssBaseline />
+        <Helmet>
+          <title>React p5 Demo</title>
+        </Helmet>
+        <div className={classes.root}>
+          <Router>
+            <Routes>
+              <Route path="//*" element={<Homepage />} />
+            </Routes>
+          </Router>
+        </div>
+      </HelmetProvider>
     </ThemeProvider>
   )
 }
